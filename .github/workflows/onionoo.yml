@@ -1,29 +1,25 @@
-name: Mirror Tor onionoo data
-
+name: onionoo data mirror
 on:
   schedule:
-    - cron: '27 */12 * * *'
+    - cron: '5 12/12 * * *'
   workflow_dispatch:
-
-jobs:
-  onionoo:
-    name: Mirror Tor onionoo data
-    runs-on: ubuntu-24.04
-    permissions:
+permissions:
         contents: write
+jobs:
+  mirroring:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Update onionoo data
+      - name: cloning
+        uses: actions/checkout@v4.2.2
+      - name: update onionoo data
         run: |
-          curl -f --max-time 60 --compressed -o "details-running-relays.json" \
+          curl -f --max-time 60 --compressed -o 'details-running-relays.json' \
           'https://onionoo.torproject.org/details?type=relay&running=true&recommended_version=true&fields=fingerprint,or_addresses,first_seen,country_name,guard_probability,advertised_bandwidth'
-
-      - name: Commit report
+      - name: commit report
         run: |
-          git config --global user.name 'Github Actions'
-          git config --global user.email 'none@users.noreply.github.com'
-          git add details-running-relays.json
+          date > date.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add details-running-relays.json date.txt
           git commit -m "Onionoo update"
           git push
