@@ -1,7 +1,7 @@
 name: onionoo data mirror
 on:
   schedule:
-    - cron: '5 */8 * * *'
+    - cron: '10 0/8 * * *'
   workflow_dispatch:
 permissions:
         contents: write
