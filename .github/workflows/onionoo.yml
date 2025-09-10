@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: '10 0/8 * * *'
   workflow_dispatch:
+  repository_dispatch:
 permissions:
         contents: write
 jobs:
